@@ -3,6 +3,7 @@ package com.andreygrosbelli.workshopmongo.resources;
 import com.andreygrosbelli.workshopmongo.domain.Post;
 import com.andreygrosbelli.workshopmongo.domain.User;
 import com.andreygrosbelli.workshopmongo.dto.UserDTO;
+import com.andreygrosbelli.workshopmongo.resources.util.URL;
 import com.andreygrosbelli.workshopmongo.services.PostService;
 import com.andreygrosbelli.workshopmongo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,5 +26,12 @@ public class PostResource {
     public ResponseEntity<Post> findById(@PathVariable String id) {
         Post obj = service.findById(id);
         return ResponseEntity.ok().body(obj);
+    }
+
+    @RequestMapping(method=RequestMethod.GET)
+    public ResponseEntity<List<Post>> findByTitle(@RequestParam(value="text", defaultValue = "") String text) {
+        text = URL.decodeParam(text);
+        List<Post> list = service.findByTitle(text);
+        return ResponseEntity.ok().body(list);
     }
 }
