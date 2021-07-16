@@ -30,8 +30,15 @@ public class PostService {
         return repo.searchTitle(text);
     }
 
-    public List<Post> fullSearch(String search, Date minDate, Date maxDate){
+    public List<Post> filters(String search, String text, Date minDate, Date maxDate){
         maxDate = new Date(maxDate.getTime() + 24 * 60 * 60 * 1000);
-        return repo.fullSearch(search, minDate, maxDate);
+
+        if(!text.equals("")) {
+            return repo.searchTitle(text);
+        } if (!search.equals("")) {
+            return repo.fullSearch(search, minDate, maxDate);
+        } else {
+            return repo.findAll();
+        }
     }
 }

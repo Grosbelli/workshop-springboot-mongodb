@@ -29,15 +29,8 @@ public class PostResource {
         return ResponseEntity.ok().body(obj);
     }
 
-   /* @RequestMapping(method=RequestMethod.GET)
-    public ResponseEntity<List<Post>> findByTitle(@RequestParam(value="text", defaultValue = "") String text) {
-        text = URL.decodeParam(text);
-        List<Post> list = service.findByTitle(text);
-        return ResponseEntity.ok().body(list);
-    }*/
-
     @RequestMapping(method=RequestMethod.GET)
-    public ResponseEntity<List<Post>> fullSearch(
+    public ResponseEntity<List<Post>> filters(
             @RequestParam(value="search", defaultValue = "") String search,
             @RequestParam(value="minDate", defaultValue = "") String minDate,
             @RequestParam(value="maxDate", defaultValue = "") String maxDate,
@@ -47,16 +40,8 @@ public class PostResource {
         Date min = URL.convertDate(minDate, new Date(0L));
         Date max = URL.convertDate(maxDate, new Date());
         text = URL.decodeParam(text);
-        if(!search.equals("")){
-            List<Post> list = service.fullSearch(search, min, max);
-            return ResponseEntity.ok().body(list);
 
-        } if (!text.equals("")) {
-            List<Post> list = service.findByTitle(text);
-            return ResponseEntity.ok().body(list);
-        } else {
-            List<Post> list = service.findAll();
-            return ResponseEntity.ok().body(list);
-        }
+        List<Post> list = service.filters(search, text, min, max);
+        return ResponseEntity.ok().body(list);
     }
 }
